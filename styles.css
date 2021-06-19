@@ -1,0 +1,21 @@
+:root {
+    --transparent: rgba(0, 0, 0, .0);
+    --light: hsl(0, 0%, 92%);
+    --dark: hsl(0, 0%, 12%);
+
+    --background: var(--light);
+    --foreground: var(--dark);
+}
+
+*, *:before, *:after {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;  
+}
+
+body {
+    height: 100vh;
+    background-color: var(--background);
+}
