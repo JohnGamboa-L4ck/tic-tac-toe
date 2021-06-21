@@ -1,10 +1,12 @@
 :root {
-    --transparent: rgba(0, 0, 0, .0);
+    --transparent9: rgba(0, 0, 0, .95);
     --light: hsl(0, 0%, 92%);
     --dark: hsl(0, 0%, 12%);
 
     --background: var(--light);
-    --foreground: var(--dark);
+    --tiles-border: var(--dark);
+    --tiles-size: 100px;
+    --mark-size: calc(var(--tiles-size) * .9);
 }
 
 *, *:before, *:after {
@@ -16,6 +18,151 @@
 }
 
 body {
-    height: 100vh;
+    min-height: 100vh;
     background-color: var(--background);
+}
+
+.board {
+    height: 100vh;
+    width: 100vw;
+    display: grid;
+    justify-content: center;
+    align-content: center;
+    grid-template-columns: repeat(3, auto);
+}
+
+.tiles {
+    width: var(--tiles-size);
+    height: var(--tiles-size);
+    border: 1px solid var(--tiles-border); 
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.tiles:first-child, 
+.tiles:nth-child(2),
+.tiles:nth-child(3) {
+    border-top: none;
+}
+
+/* 3n === (3x0(n)=0, 3x1(n)=3, 3x2(n)=6, 
+3x3(n)=9) and so on. means 3n + 3 = (3)(6)(9)... */
+.tiles:nth-child(3n + 3){
+    border-right: none;
+}
+
+.tiles:last-child, 
+.tiles:nth-child(8),
+.tiles:nth-child(7) {
+    border-bottom: none;
+}
+
+.tiles:nth-child(3n + 1){
+    border-left: none;
+}
+
+.tiles.x, .tiles.o {
+    cursor: not-allowed;
+}
+
+.tiles.x::before,
+.tiles.x::after,
+.tiles.o::before,
+.tiles.o::after {
+    background-color: black;
+}
+
+.board.x-turn .tiles:not(.x):not(.o):hover::before,
+.board.x-turn .tiles:not(.x):not(.o):hover::after,
+.board.o-turn .tiles:not(.x):not(.o):hover::before,
+.board.o-turn .tiles:not(.x):not(.o):hover::after {
+    background-color: lightgray;
+}
+
+.tiles.x::before,
+.tiles.x::after,
+.board.x-turn .tiles:not(.x):not(.o):hover::before,
+.board.x-turn .tiles:not(.x):not(.o):hover::after {
+    content: '';
+    position: absolute;
+    width: calc(var(--mark-size) * .15);
+    height: var(--mark-size);
+}
+
+.tiles.x::before,
+.board.x-turn .tiles:not(.x):not(.o):hover::before {
+    transform: rotate(45deg);
+}
+
+.tiles.x::after,
+.board.x-turn .tiles:not(.x):not(.o):hover::after {
+    transform: rotate(-45deg);
+}
+
+.tiles.o::before,
+.tiles.o::after,
+.board.o-turn .tiles:not(.x):not(.o):hover::before,
+.board.o-turn .tiles:not(.x):not(.o):hover::after {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+}
+
+.tiles.o::before,
+.board.o-turn .tiles:not(.x):not(.o):hover::before {
+    width: var(--mark-size);
+    height: var(--mark-size);
+}
+
+.tiles.o::after,
+.board.o-turn .tiles:not(.x):not(.o):hover::after {
+    width: calc(var(--mark-size) * .7);
+    height: calc(var(--mark-size) * .7);
+    background-color: var(--light);
+}
+
+.match-result-container {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background-color: var(--transparent9);
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 5rem;
+    flex-direction: column;
+}
+
+.match-result-container button {
+    font-size: 3rem;
+    cursor: pointer;
+    padding: .25rem;
+    background-color: white;
+    border: 1px solid black;
+}
+
+.match-result-container button:hover {
+    color: white;
+    background-color: black;
+    border: 1px solid white;
+}
+
+.match-result-container.show {
+    display: flex;
+}
+
+
+@media only screen and (max-width: 500px) {
+    :root {
+        --tiles-size: 80px;
+    }
+    .match-result-container {
+        font-size: 3rem;
+    }
+    .match-result-container button {
+        font-size: 1.7rem;
+    }
 }
