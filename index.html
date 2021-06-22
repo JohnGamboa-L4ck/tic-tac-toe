@@ -9,22 +9,25 @@
         <title>Tic Tac Toe</title>
     </head>
     <body>
-        <div class = "board x-turn" id = "board">
-            <div class = "tiles x"></div>
-            <div class = "tiles o"></div>
-            <div class = "tiles"></div>
-            <div class = "tiles"></div>
-            <div class = "tiles"></div>
-            <div class = "tiles"></div>
-            <div class = "tiles"></div>
-            <div class = "tiles"></div>
-            <div class = "tiles"></div>
+        <div class = "home" id = "home">
+            <h1>TIC<span></span>TAC<span></span>TOE</h1>
+            <button id = "playButton">Play</button>
         </div>
-        <div class = "match-result-container" id = "matchResultContainer">
+        <div class = "board x-turn" id = "board"> <!-- o-turn --> <!-- show -->
+            <div class = "tiles" data-tile></div> <!-- x -->
+            <div class = "tiles" data-tile></div> <!-- o -->
+            <div class = "tiles" data-tile></div>
+            <div class = "tiles" data-tile></div>
+            <div class = "tiles" data-tile></div>
+            <div class = "tiles" data-tile></div>
+            <div class = "tiles" data-tile></div>
+            <div class = "tiles" data-tile></div>
+            <div class = "tiles" data-tile></div>
+        </div>
+        <div class = "match-result-container" id = "matchResultContainer"> <!-- show -->
             <div data-match-result-text>X Wins</div>
             <button id = "restartButton">Restart</button>
         </div>
-
     </body>
     <script src="script.js"></script>
 </html>
