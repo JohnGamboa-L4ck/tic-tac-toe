@@ -5,13 +5,22 @@
         <meta name = "viewport" content = "width=device-width, initial-scale=1.0">
         <meta http-equiv = "X-UA-Compatible" content = "ie=edge">
         <link rel = "icon" href = "data:;base64,=">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" 
+            rel="stylesheet">
         <link rel = "stylesheet" href = "styles.css">
         <title>Tic Tac Toe</title>
     </head>
     <body>
-        <div class = "home" id = "home">
+        <div class = "home" id = "home"> <!-- hide -->
             <h1>TIC<span></span>TAC<span></span>TOE</h1>
-            <button id = "playButton">Play</button>
+            <button id = "playButton">
+                <span class="material-icons-outlined icon middle">play_circle</span>
+            </button>
+        </div>
+        <div class = "setting" id = "setting"> <!-- show -->
+            <h2>Game Mode</h2>
+            <button>2 Player</button>
+            <button>Computer</button>
         </div>
         <div class = "board x-turn" id = "board"> <!-- o-turn --> <!-- show -->
             <div class = "tiles" data-tile></div> <!-- x -->
@@ -26,7 +35,17 @@
         </div>
         <div class = "match-result-container" id = "matchResultContainer"> <!-- show -->
             <div data-match-result-text>X Wins</div>
-            <button id = "restartButton">Restart</button>
+            <div class = "action-button">
+                <button id = "restartButton">
+                    <span class="material-icons-outlined icon middle">replay</span>
+                </button>
+                <button id = "homeButton">
+                    <span class="material-icons-outlined icon middle">home</span>
+                </button>
+                <button id = "quitButton">
+                    <span class="material-icons-outlined icon middle">exit_to_app</span>
+                </button>
+            </div>
         </div>
     </body>
     <script src="script.js"></script>

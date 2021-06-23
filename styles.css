@@ -1,10 +1,9 @@
 :root {
-    --transparent9: rgba(0, 0, 0, .95);
+    --transparent9: rgba(0, 0, 0, .90);
     --light: hsl(0, 0%, 92%);
     --dark: hsl(0, 0%, 12%);
 
     --background: var(--light);
-    --tiles-border: var(--dark);
     --tiles-size: 100px;
     --mark-size: calc(var(--tiles-size) * .9);
 }
@@ -26,12 +25,17 @@ body, button {
     font-family: monospace, monospace;
 }
 
-.home {
+button {
+    border-radius: 4px;
+}
+
+.home, .setting {
     min-height: 100vh; 
     display: flex;
     justify-content: center ;
     align-items: center;
     flex-direction: column;
+    text-align: center;
 }
 
 .home.hide {
@@ -39,26 +43,67 @@ body, button {
 }
 
 .home h1 {
-    text-align: center;
-    color: var(--dark);
     font-size: 4rem;
     margin: .5rem 0;
+    color: var(--dark);
 }
 
 .home h1 span::before {
     content: '-';
 }
 
-.home button {
+.home button, 
+.setting button {
     cursor: pointer;
-    color: var(--dark);
     font-size: 2.5rem;
     padding: .25rem;
+    color: white;
+    border: 1px solid white;
+    background-color: black;
 }
 
-.home button:hover, .home button:focus-visible {
-    background-color: var(--dark);
-    color: var(--light);
+.home button {
+    outline: none;
+}
+
+.icon {
+    font-size: 3rem;
+}
+
+.middle {
+    vertical-align: middle;
+}
+
+.home button:hover, 
+.home button:focus-visible,
+.setting button:hover,
+.setting button:focus-visible {
+    color: black;
+    border: 1px ridge black;
+    background-color: white;
+}
+
+.home button:hover, 
+.home button:focus-visible {
+    border-radius: 50%;
+    border-style: solid;
+    transition: .2s;
+}
+
+.setting {
+    display: none;
+}
+
+.setting.show {
+    display: flex;
+}
+
+.setting h2 {
+    font-size: 3rem;
+}
+
+.setting button {
+    margin: .25rem;
 }
 
 .board {
@@ -77,7 +122,7 @@ body, button {
 .tiles {
     width: var(--tiles-size);
     height: var(--tiles-size);
-    border: 1px solid var(--tiles-border); 
+    border: 1px solid black; 
     cursor: pointer;
     display: flex;
     justify-content: center;
@@ -170,7 +215,7 @@ body, button {
 .match-result-container {
     display: none;
     position: fixed;
-    inset: 0; /* top: 0; right: 0; bottom: 0; left: 0; */
+    inset: 0;
     background-color: var(--transparent9);
     justify-content: center;
     align-items: center;
@@ -179,15 +224,19 @@ body, button {
     flex-direction: column;
 }
 
-.match-result-container button {
-    font-size: 3rem;
+.match-result-container .action-button {
+    display: flex;
+}
+
+.match-result-container .action-button button {
     cursor: pointer;
-    padding: .25rem;
+    margin: .25rem;
     background-color: white;
     border: 1px solid black;
 }
 
-.match-result-container button:hover {
+.match-result-container .action-button button:hover, 
+.match-result-container .action-button button:focus-visible {
     color: white;
     background-color: black;
     border: 1px solid white;
@@ -197,7 +246,6 @@ body, button {
     display: flex;
 }
 
-
 @media only screen and (max-width: 500px) {
     :root {
         --tiles-size: 80px;
@@ -205,10 +253,13 @@ body, button {
     .home h1 {
         font-size: 2.5rem;
     }
+    .setting h2 {
+        font-size: 2rem;
+    }
     .match-result-container {
         font-size: 3rem;
     }
-    .match-result-container button,
+    .icon,
     .home button {
         font-size: 1.7rem;
     }
