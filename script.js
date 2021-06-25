@@ -33,17 +33,18 @@ const display = (() => {
         resultMessage.innerText = msg;
     };
 
-    const restartGame = () => {
-        _hideResultDiv();
-    };
+    const restartGame = () => _hideResultDiv();
 
     const backToHome = () => {
         _hideBoard();
         _showHome();
     };
 
+    const exit = () => window.close();
+
     return { 
-        playIsClicked, modeIsSelected, matchEnded, restartGame, backToHome
+        playIsClicked, modeIsSelected, matchEnded, restartGame, 
+        backToHome, exit
     }
 
 })();
@@ -61,6 +62,18 @@ const Player = (name, mark) => {
         name, mark, tiles, info
     }
 };
+
+const generateNumber = function(){
+    const tilesDivCollection = document.querySelectorAll('[data-tile]');
+    let array = [];
+    tilesDivCollection.forEach(function(tile){
+        if(!tile.classList.contains('x') && !tile.classList.contains('o')){
+            array.push(tile.dataset.tile)
+        }
+    });
+    if(array.length) 
+    return array[Math.floor(Math.random() * array.length)];
+}
 
 const game = (() => {
 
@@ -111,6 +124,10 @@ const game = (() => {
             boardDiv.classList.add('x-turn');
             // console.log(`${players[0].name} turn!`);
             marker = players[0].mark;
+        }
+
+        if(mode === 'vsComputer' && (marker == 'o' && players[1].name == 'Computer')){
+            computerTurn();
         }
     };
 
@@ -200,6 +217,19 @@ const game = (() => {
         display.backToHome();
     };
 
+    const computerTurn = () => {
+        let target = generateNumber();
+        tilesDivCollection.forEach(function(tile){
+            tile.setAttribute('style', 'pointer-events: none; border-color: gray;');
+        });
+        setTimeout(() => {
+            tilesDivCollection.forEach(function(tile){
+                tile.removeAttribute('style');
+            });
+        }, 1499);
+        setTimeout(() => tilesDivCollection[target-1].click(),1500);
+    };
+
     return {
         start, markTile, restart, home
     }
@@ -227,4 +257,8 @@ restartButton.addEventListener('click', game.restart);
 const homeButton = document.querySelector('#homeButton');
 homeButton.addEventListener('click', game.home);
 
+const quitButton = document.querySelector('#quitButton');
+quitButton.addEventListener('click', display.exit);
+
 //vsComputer: u should be able to select mark
+//add minimax
