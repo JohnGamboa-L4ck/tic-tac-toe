@@ -37,8 +37,13 @@ const display = (() => {
         _hideResultDiv();
     };
 
+    const backToHome = () => {
+        _hideBoard();
+        _showHome();
+    };
+
     return { 
-        playIsClicked, modeIsSelected, matchEnded, restartGame
+        playIsClicked, modeIsSelected, matchEnded, restartGame, backToHome
     }
 
 })();
@@ -76,12 +81,6 @@ const game = (() => {
 
     const boardDiv = document.querySelector('#board');
     const tilesDivCollection = document.querySelectorAll('.board [data-tile]');
-
-    let num = 1;
-    tilesDivCollection.forEach(function(tile){
-        tile.setAttribute('data-tile', `${num}`);
-        num++;
-    });
 
     const _isTurn = () => 
         players[0].mark == marker ? players[0].name : players[1].name;
@@ -145,6 +144,12 @@ const game = (() => {
 
         let playerOne;
         let playerTwo;
+        let num = 1;
+
+        tilesDivCollection.forEach(function(tile){
+            tile.setAttribute('data-tile', `${num}`);
+            num++;
+        });
 
         if(event){
             display.modeIsSelected();
@@ -154,10 +159,10 @@ const game = (() => {
         if(mode === 'twoPlayer'){
             playerOne = Player('Player X', 'x');
             playerTwo = Player('Player O', 'o'); }
-        else{
+        else if(mode === 'vsComputer'){
             playerOne = Player('Player', 'x');
-            playerTwo = Player('Computer', 'o');
-        }
+            playerTwo = Player('Computer', 'o'); }
+        else { return; }
         players.push(playerOne);
         players.push(playerTwo);
 
@@ -189,8 +194,14 @@ const game = (() => {
         start();
     };
 
+    const home = () => {
+        mode = '';
+        restart();
+        display.backToHome();
+    };
+
     return {
-        start, markTile, restart
+        start, markTile, restart, home
     }
 
 })();
@@ -212,5 +223,8 @@ const resetEvent = function(){
 
 const restartButton = document.querySelector('#restartButton');
 restartButton.addEventListener('click', game.restart);
+
+const homeButton = document.querySelector('#homeButton');
+homeButton.addEventListener('click', game.home);
 
 //vsComputer: u should be able to select mark
