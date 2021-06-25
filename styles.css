@@ -100,10 +100,12 @@ button {
 
 .setting h2 {
     font-size: 3rem;
+    text-decoration: underline;
 }
 
 .setting button {
     margin: .25rem;
+    width: 275px;
 }
 
 .board {
@@ -244,6 +246,7 @@ button {
 
 .match-result-container.show {
     display: flex;
+    text-align: center;
 }
 
 @media only screen and (max-width: 500px) {
@@ -260,7 +263,11 @@ button {
         font-size: 3rem;
     }
     .icon,
-    .home button {
+    .home button,
+    .setting button {
         font-size: 1.7rem;
+    }
+    .setting button {
+        width: 191px;
     }
 }

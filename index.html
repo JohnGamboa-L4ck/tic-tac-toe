@@ -19,10 +19,10 @@
         </div>
         <div class = "setting" id = "setting"> <!-- show -->
             <h2>Game Mode</h2>
-            <button>2 Player</button>
-            <button>Computer</button>
+            <button id = "vsComputer" data-mode>vs.Computer</button>
+            <button id = "twoPlayer" data-mode>Two-Player</button>
         </div>
-        <div class = "board x-turn" id = "board"> <!-- o-turn --> <!-- show -->
+        <div class = "board" id = "board"> <!-- o-turn --> <!-- x-turn --> <!-- show -->
             <div class = "tiles" data-tile></div> <!-- x -->
             <div class = "tiles" data-tile></div> <!-- o -->
             <div class = "tiles" data-tile></div>
@@ -34,7 +34,7 @@
             <div class = "tiles" data-tile></div>
         </div>
         <div class = "match-result-container" id = "matchResultContainer"> <!-- show -->
-            <div data-match-result-text>X Wins</div>
+            <div data-match-result-text></div>
             <div class = "action-button">
                 <button id = "restartButton">
                     <span class="material-icons-outlined icon middle">replay</span>
