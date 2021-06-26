@@ -6,6 +6,8 @@ const display = (() => {
     const settingDiv = document.querySelector('#setting');
     const boardDiv = document.querySelector('#board');
     const resultDiv = document.querySelector('#matchResultContainer');
+    const gameMenuDiv = document.querySelector('#gameMenu');
+    const closeMenuBtn = document.querySelector('.close-menu-button');
 
     const _hideHome = () => homeDiv.classList.add('hide');
     const _showHome = () => homeDiv.classList.remove('hide');
@@ -15,6 +17,10 @@ const display = (() => {
     const _hideBoard = () => boardDiv.classList.remove('show');
     const _showResultDiv = () => resultDiv.classList.add('show');
     const _hideResultDiv = () => resultDiv.classList.remove('show');
+    const _showGameMenuDiv = () => gameMenuDiv.classList.add('show');
+    const _hideGameMenuDiv = () => gameMenuDiv.classList.remove('show');
+    const _showCloseMenuBtn = () => closeMenuBtn.classList.add('show');
+    const _hideCloseMenuBtn = () => closeMenuBtn.classList.remove('show');
 
     const resultMessage = document.querySelector('[data-match-result-text]');
 
@@ -26,25 +32,45 @@ const display = (() => {
     const modeIsSelected = () => {
         _hideSetting();
         _showBoard();
+        _showGameMenuDiv();
     };
 
     const matchEnded = (msg) => {
+        _hideGameMenuDiv();
+        _hideCloseMenuBtn();
         _showResultDiv();
         resultMessage.innerText = msg;
     };
 
-    const restartGame = () => _hideResultDiv();
+    const restartGame = () => {
+        _hideResultDiv();
+        _showGameMenuDiv();
+    };
 
     const backToHome = () => {
         _hideBoard();
         _showHome();
+        _hideGameMenuDiv();
+    };
+
+    const menuIsClicked = () => {
+        resultMessage.innerText = '';
+        _hideGameMenuDiv();
+        if(!closeMenuBtn.classList.contains('show')) _showCloseMenuBtn();
+        _showResultDiv();
+    };
+
+    const closeMenu = () => {
+        _hideCloseMenuBtn();
+        _hideResultDiv();
+        _showGameMenuDiv();
     };
 
     const exit = () => window.close();
 
     return { 
         playIsClicked, modeIsSelected, matchEnded, restartGame, 
-        backToHome, exit
+        backToHome, exit, menuIsClicked, closeMenu
     }
 
 })();
@@ -95,6 +121,19 @@ const game = (() => {
     const boardDiv = document.querySelector('#board');
     const tilesDivCollection = document.querySelectorAll('.board [data-tile]');
 
+    const _computerIndex = () => {
+        let index = 0;
+        let computerIndex;
+        players.forEach(function(players){
+            if(players.name == 'Computer'){
+                computerIndex = index;
+            }
+            index++;
+        });
+        return computerIndex;
+    };
+
+
     const _isTurn = () => 
         players[0].mark == marker ? players[0].name : players[1].name;
 
@@ -125,10 +164,7 @@ const game = (() => {
             // console.log(`${players[0].name} turn!`);
             marker = players[0].mark;
         }
-
-        if(mode === 'vsComputer' && (marker == 'o' && players[1].name == 'Computer')){
-            computerTurn();
-        }
+        _checkComputerTurn();
     };
 
     const _checkWin = function(){
@@ -153,12 +189,29 @@ const game = (() => {
         if(target === 9 && message == false) message = 'Draw!'; 
     };
 
-    const _endGame = function(msg){
-        display.matchEnded(msg);
+    const _endGame = (msg) => display.matchEnded(msg);
+
+    const _checkComputerTurn = () => {
+        if(mode === 'vsComputer' && (players[_computerIndex()].name == 'Computer'
+            && players[_computerIndex()].mark == marker)){
+            _computerTurn();
+        }
+    };
+
+    const _computerTurn = () => {
+        let target = generateNumber();
+        tilesDivCollection.forEach(function(tile){
+            tile.setAttribute('style', 'pointer-events: none; border-color: gray;');
+        });
+        setTimeout(() => {
+            tilesDivCollection.forEach(function(tile){
+                tile.removeAttribute('style');
+            });
+        }, 1499);
+        setTimeout(() => tilesDivCollection[target-1].click(),1500);
     };
 
     const start = (event) => {
-
         let playerOne;
         let playerTwo;
         let num = 1;
@@ -187,6 +240,7 @@ const game = (() => {
         resetEvent();
         marker = playerOne.mark;
         boardDiv.classList.add('x-turn');
+        _checkComputerTurn();
     };
 
     const markTile = (event) => {
@@ -217,19 +271,6 @@ const game = (() => {
         display.backToHome();
     };
 
-    const computerTurn = () => {
-        let target = generateNumber();
-        tilesDivCollection.forEach(function(tile){
-            tile.setAttribute('style', 'pointer-events: none; border-color: gray;');
-        });
-        setTimeout(() => {
-            tilesDivCollection.forEach(function(tile){
-                tile.removeAttribute('style');
-            });
-        }, 1499);
-        setTimeout(() => tilesDivCollection[target-1].click(),1500);
-    };
-
     return {
         start, markTile, restart, home
     }
@@ -251,14 +292,21 @@ const resetEvent = function(){
     game.markTile, { once: true}));
 };
 
-const restartButton = document.querySelector('#restartButton');
-restartButton.addEventListener('click', game.restart);
+const restartBtn = document.querySelector('#restartButton');
+restartBtn.addEventListener('click', game.restart);
 
-const homeButton = document.querySelector('#homeButton');
-homeButton.addEventListener('click', game.home);
+const homeBtn = document.querySelector('#homeButton');
+homeBtn.addEventListener('click', game.home);
 
-const quitButton = document.querySelector('#quitButton');
-quitButton.addEventListener('click', display.exit);
+const quitBtn = document.querySelector('#quitButton');
+quitBtn.addEventListener('click', display.exit);
+
+const menuBtn = document.querySelector('#menuButton');
+menuBtn.addEventListener('click', display.menuIsClicked);
+
+const closeMenuBtn = document.querySelector('#closeMenuButton');
+closeMenuBtn.addEventListener('click', display.closeMenu);
+
 
 //vsComputer: u should be able to select mark
 //add minimax

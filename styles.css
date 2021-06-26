@@ -60,9 +60,6 @@ button {
     color: white;
     border: 1px solid white;
     background-color: black;
-}
-
-.home button {
     outline: none;
 }
 
@@ -214,6 +211,32 @@ button {
     background-color: var(--light);
 }
 
+.game-menu {
+    position: fixed;
+    right: 0;
+    left: 0;
+    padding: .5rem;
+    display: none;
+}
+
+.game-menu button {
+    float: right;
+    cursor: pointer;
+    border: none;
+    background-color: var(--light);
+    color: gray;
+}
+
+.game-menu button:hover,
+.game-menu button:focus-visible {
+    outline: none;
+    color: black;
+}
+
+.game-menu.show {
+    display: block;
+}
+
 .match-result-container {
     display: none;
     position: fixed;
@@ -249,6 +272,27 @@ button {
     text-align: center;
 }
 
+.close-menu-button {
+    float: right;
+    position: absolute;
+    top: .5rem;
+    right: .5rem;
+    background-color: rgba(0, 0, 0, .0)!important;
+    color: white;
+    border: none!important;
+    outline: none;
+    display: none;
+}
+
+.close-menu-button:hover,
+.close-menu-button:focus-visible {
+    color: gray!important;
+}
+
+.close-menu-button.show {
+    display: inherit;
+}
+
 @media only screen and (max-width: 500px) {
     :root {
         --tiles-size: 80px;
@@ -269,5 +313,20 @@ button {
     }
     .setting button {
         width: 191px;
+    }
+}
+
+@media only screen and (max-height: 300px)
+and (orientation:landscape) {
+    :root {
+        --tiles-size: 70px;
+    }
+    .match-result-container {
+        font-size: 2.5rem;
+    }
+    .icon,
+    .home button,
+    .setting button {
+        font-size: 1.7rem;
     }
 }
